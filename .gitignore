@@ -1,0 +1,46 @@
+# Ignore data folder
+/data/
+
+# Ignore history folder
+.history/
+
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore environment files
+.env
+*.env
+
+# Ignore logs
+*.log
+
+# Ignore compiled code
+*.so
+*.o
+*.out
+*.a
+*.class
+*.jar
+*.exe
+*.dll
+
+# Ignore temporary files
+*.tmp
+*.swp
+*.swo
+*.bak
+*.orig
+*.save
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
+*.iml
