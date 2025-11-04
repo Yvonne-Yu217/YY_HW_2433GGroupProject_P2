@@ -4,9 +4,23 @@
 -- 创建日期：2025-11-04
 -- ============================================================================
 
+-- 确保数据库存在并选择
+CREATE DATABASE IF NOT EXISTS chronic_disease_data;
+USE chronic_disease_data;
+
 -- ============================================================================
 -- 第一部分：维度表 (Dimension Tables)
 -- ============================================================================
+
+-- 删除已存在的表（按依赖顺序逆序删除）
+DROP TABLE IF EXISTS fact_health_observations;
+DROP TABLE IF EXISTS stg_data_cleaning;
+DROP TABLE IF EXISTS dim_stratifications;
+DROP TABLE IF EXISTS dim_stratification_categories;
+DROP TABLE IF EXISTS dim_data_value_types;
+DROP TABLE IF EXISTS dim_questions;
+DROP TABLE IF EXISTS dim_topics;
+DROP TABLE IF EXISTS dim_locations;
 
 -- 维度表 1: 健康主题 (Topics)
 CREATE TABLE dim_topics (
@@ -68,30 +82,25 @@ CREATE TABLE dim_data_value_types (
 
 -- 事实表: 健康观察指标 (Health Observations)
 CREATE TABLE fact_health_observations (
-    observation_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    
+    observation_id BIGINT AUTO_INCREMENT,
     -- 外键关联维度表
     topic_id INT NOT NULL,
     question_id INT NOT NULL,
     location_id INT NOT NULL,
     stratification_id INT,
     data_value_type_id INT,
-    
     -- 时间维度
     year_start INT NOT NULL,
     year_end INT NOT NULL,
-    
     -- 观察数据
     data_value DECIMAL(18, 4),
     low_confidence_limit DECIMAL(18, 4),
     high_confidence_limit DECIMAL(18, 4),
-    
     -- 元数据
     response_value VARCHAR(255),
     data_value_footnote_symbol VARCHAR(10),
     data_value_footnote TEXT,
     data_source VARCHAR(100),
-    
     -- 原始 ID（用于追踪）
     original_location_id INT,
     original_topic_id VARCHAR(50),
@@ -102,12 +111,10 @@ CREATE TABLE fact_health_observations (
     original_stratif_id_2 VARCHAR(50),
     original_stratif_category_id_3 VARCHAR(50),
     original_stratif_id_3 VARCHAR(50),
-    
     -- 审计字段
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     load_date DATE,
-    
     -- 主键和外键
     PRIMARY KEY (observation_id),
     FOREIGN KEY (topic_id) REFERENCES dim_topics(topic_id),
@@ -145,8 +152,6 @@ CREATE INDEX idx_dim_location_type ON dim_locations(location_type);
 CREATE TABLE stg_data_cleaning (
     record_id BIGINT PRIMARY KEY AUTO_INCREMENT,
     original_record_id BIGINT,
-    
-    -- 清洗后的主要字段
     year_start INT,
     year_end INT,
     location_abbr VARCHAR(10),
@@ -155,44 +160,26 @@ CREATE TABLE stg_data_cleaning (
     question VARCHAR(500),
     data_value DECIMAL(18, 4),
     data_value_type VARCHAR(100),
-    
-    -- 数据质量标记
     is_valid BOOLEAN DEFAULT TRUE,
     validation_error_msg TEXT,
-    
-    -- 处理信息
     processed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     processed_by VARCHAR(100)
 );
 
 -- ============================================================================
--- 第五部分：数据加载和查询示例
+-- 第五部分：ETL 数据加载流程 - 从 Data Lake 同步数据到 Data Warehouse
 -- ============================================================================
 
-/*
-
--- 示例 1: 从 Data Lake 加载数据到维度表和事实表的 ETL 流程伪代码
-
--- Step 1: 加载 Topics 维度
-INSERT INTO dim_topics (topic_name, topic_code)
+-- Step 1: 加载 Topics 维度表
+INSERT IGNORE INTO dim_topics (topic_name, topic_code)
 SELECT DISTINCT
     Topic,
-    TopicID
+    CAST(TopicID AS CHAR)
 FROM stg_us_chronic_disease_raw
 WHERE Topic IS NOT NULL;
 
--- Step 2: 加载 Questions 维度
-INSERT INTO dim_questions (question_text, question_code, topic_id)
-SELECT DISTINCT
-    q.Question,
-    q.QuestionID,
-    t.topic_id
-FROM stg_us_chronic_disease_raw q
-JOIN dim_topics t ON q.Topic = t.topic_name
-WHERE q.Question IS NOT NULL;
-
--- Step 3: 加载 Locations 维度
-INSERT INTO dim_locations (location_abbr, location_desc, geolocation)
+-- Step 2: 加载 Locations 维度表
+INSERT IGNORE INTO dim_locations (location_abbr, location_desc, geolocation)
 SELECT DISTINCT
     LocationAbbr,
     LocationDesc,
@@ -200,30 +187,67 @@ SELECT DISTINCT
 FROM stg_us_chronic_disease_raw
 WHERE LocationDesc IS NOT NULL;
 
--- Step 4: 加载 Data Value Types 维度
-INSERT INTO dim_data_value_types (type_name, unit_of_measure)
+-- Step 3: 加载 Data Value Types 维度表
+INSERT IGNORE INTO dim_data_value_types (type_name, unit_of_measure)
 SELECT DISTINCT
     DataValueType,
     DataValueUnit
 FROM stg_us_chronic_disease_raw
 WHERE DataValueType IS NOT NULL;
 
--- Step 5: 加载 Stratifications 维度
-INSERT INTO dim_stratification_categories (category_name)
-SELECT DISTINCT StratificationCategory1
-FROM stg_us_chronic_disease_raw
-WHERE StratificationCategory1 IS NOT NULL
-UNION
-SELECT DISTINCT StratificationCategory2
-FROM stg_us_chronic_disease_raw
-WHERE StratificationCategory2 IS NOT NULL
-UNION
-SELECT DISTINCT StratificationCategory3
-FROM stg_us_chronic_disease_raw
-WHERE StratificationCategory3 IS NOT NULL;
+-- Step 4: 加载 Questions 维度表（依赖 Topics）
+INSERT IGNORE INTO dim_questions (question_text, question_code, topic_id)
+SELECT DISTINCT
+    r.Question,
+    CAST(r.QuestionID AS CHAR),
+    COALESCE(t.topic_id, 1)
+FROM stg_us_chronic_disease_raw r
+LEFT JOIN dim_topics t ON r.Topic = t.topic_name
+WHERE r.Question IS NOT NULL;
 
--- Step 6: 加载事实表
-INSERT INTO fact_health_observations (
+-- Step 5: 加载 Stratification Categories 维度表（分开三个 INSERT）
+INSERT IGNORE INTO dim_stratification_categories (category_name)
+SELECT DISTINCT CAST(StratificationCategory1 AS CHAR)
+FROM stg_us_chronic_disease_raw
+WHERE StratificationCategory1 IS NOT NULL AND CAST(StratificationCategory1 AS CHAR) != '';
+
+INSERT IGNORE INTO dim_stratification_categories (category_name)
+SELECT DISTINCT CAST(StratificationCategory2 AS CHAR)
+FROM stg_us_chronic_disease_raw
+WHERE StratificationCategory2 IS NOT NULL AND CAST(StratificationCategory2 AS CHAR) != '';
+
+INSERT IGNORE INTO dim_stratification_categories (category_name)
+SELECT DISTINCT CAST(StratificationCategory3 AS CHAR)
+FROM stg_us_chronic_disease_raw
+WHERE StratificationCategory3 IS NOT NULL AND CAST(StratificationCategory3 AS CHAR) != '';
+
+-- Step 6: 加载 Stratifications 维度表（分开三个 INSERT，避免 UNION 和字符集冲突）
+INSERT IGNORE INTO dim_stratifications (stratif_category_id, stratification_value)
+SELECT DISTINCT
+    COALESCE(sc.stratif_category_id, 1),
+    CAST(r.Stratification1 AS CHAR)
+FROM stg_us_chronic_disease_raw r
+LEFT JOIN dim_stratification_categories sc ON CAST(r.StratificationCategory1 AS CHAR) COLLATE utf8mb4_general_ci = sc.category_name COLLATE utf8mb4_general_ci
+WHERE r.Stratification1 IS NOT NULL;
+
+INSERT IGNORE INTO dim_stratifications (stratif_category_id, stratification_value)
+SELECT DISTINCT
+    COALESCE(sc.stratif_category_id, 1),
+    CAST(r.Stratification2 AS CHAR)
+FROM stg_us_chronic_disease_raw r
+LEFT JOIN dim_stratification_categories sc ON CAST(r.StratificationCategory2 AS CHAR) COLLATE utf8mb4_general_ci = sc.category_name COLLATE utf8mb4_general_ci
+WHERE r.Stratification2 IS NOT NULL;
+
+INSERT IGNORE INTO dim_stratifications (stratif_category_id, stratification_value)
+SELECT DISTINCT
+    COALESCE(sc.stratif_category_id, 1),
+    CAST(r.Stratification3 AS CHAR)
+FROM stg_us_chronic_disease_raw r
+LEFT JOIN dim_stratification_categories sc ON CAST(r.StratificationCategory3 AS CHAR) COLLATE utf8mb4_general_ci = sc.category_name COLLATE utf8mb4_general_ci
+WHERE r.Stratification3 IS NOT NULL;
+
+-- Step 7: 加载事实表（健康观察指标）
+INSERT IGNORE INTO fact_health_observations (
     topic_id, question_id, location_id, stratification_id,
     data_value_type_id, year_start, year_end, data_value,
     low_confidence_limit, high_confidence_limit,
@@ -233,11 +257,11 @@ INSERT INTO fact_health_observations (
     original_stratif_category_id_1, original_stratif_id_1
 )
 SELECT
-    t.topic_id,
-    q.question_id,
-    l.location_id,
-    s.stratification_id,
-    dvt.data_value_type_id,
+    COALESCE(t.topic_id, 1),
+    COALESCE(q.question_id, 1),
+    COALESCE(l.location_id, 1),
+    COALESCE(s.stratification_id, 1),
+    COALESCE(dvt.data_value_type_id, 1),
     r.YearStart,
     r.YearEnd,
     CAST(r.DataValue AS DECIMAL(18,4)),
@@ -248,19 +272,19 @@ SELECT
     r.DataSource,
     CURDATE(),
     r.LocationID,
-    r.TopicID,
-    r.QuestionID,
-    r.StratificationCategoryID1,
-    r.StratificationID1
+    CAST(r.TopicID AS CHAR),
+    CAST(r.QuestionID AS CHAR),
+    CAST(r.StratificationCategoryID1 AS CHAR),
+    CAST(r.StratificationID1 AS CHAR)
 FROM stg_us_chronic_disease_raw r
 LEFT JOIN dim_topics t ON r.Topic = t.topic_name
 LEFT JOIN dim_questions q ON r.Question = q.question_text
 LEFT JOIN dim_locations l ON r.LocationDesc = l.location_desc
 LEFT JOIN dim_data_value_types dvt ON r.DataValueType = dvt.type_name
-LEFT JOIN dim_stratifications s ON r.Stratification1 = s.stratification_value
-WHERE r.DataValue IS NOT NULL;
-
-*/
+LEFT JOIN dim_stratifications s ON CAST(r.Stratification1 AS CHAR) COLLATE utf8mb4_general_ci = s.stratification_value COLLATE utf8mb4_general_ci
+WHERE r.DataValue IS NOT NULL
+  AND r.YearStart IS NOT NULL
+  AND r.LocationDesc IS NOT NULL;
 
 -- ============================================================================
 -- 第六部分：分析查询示例

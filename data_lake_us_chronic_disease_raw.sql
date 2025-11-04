@@ -1,13 +1,12 @@
--- ============================================================================
--- Data Lake Schema: 美国慢性病指标数据 (U.S. Chronic Disease Indicators)
--- 目的：存储来自 CDC 的原始慢性病指标数据
--- 创建日期：2025-11-04
--- ============================================================================
+-- Ensure schema exists and is selected
+CREATE DATABASE IF NOT EXISTS chronic_disease_data;
+USE chronic_disease_data;
 
 -- Drop existing table if needed (可选)
 -- DROP TABLE IF EXISTS stg_us_chronic_disease_raw;
+-- Drop table if it already exists to avoid error
+DROP TABLE IF EXISTS stg_us_chronic_disease_raw;
 
--- 创建 Data Lake 表：原始慢性病指标数据
 CREATE TABLE stg_us_chronic_disease_raw (
     YearStart                                INT,
     YearEnd                                  INT,
@@ -45,12 +44,7 @@ CREATE TABLE stg_us_chronic_disease_raw (
     StratificationID3                        DECIMAL(18, 4)
 );
 
--- 创建索引以提高查询性能
-CREATE INDEX idx_stg_topic ON stg_us_chronic_disease_raw(Topic);
-CREATE INDEX idx_stg_question ON stg_us_chronic_disease_raw(Question);
-CREATE INDEX idx_stg_location ON stg_us_chronic_disease_raw(LocationDesc);
-CREATE INDEX idx_stg_year ON stg_us_chronic_disease_raw(YearStart, YearEnd);
-CREATE INDEX idx_stg_data_value ON stg_us_chronic_disease_raw(Data_Value);
+
 
 -- ============================================================================
 -- 加载数据到 Data Lake 表的示例命令（根据数据库类型调整）
@@ -59,14 +53,13 @@ CREATE INDEX idx_stg_data_value ON stg_us_chronic_disease_raw(Data_Value);
 -- PostgreSQL 示例：
 -- COPY stg_us_chronic_disease_raw FROM '/path/to/U.S._Chronic_Disease_Indicators_20251102.csv' 
 --     WITH (FORMAT csv, HEADER true, DELIMITER ',', NULL 'NULL');
-
 -- MySQL 示例：
--- LOAD DATA LOCAL INFILE '/path/to/U.S._Chronic_Disease_Indicators_20251102.csv'
---     INTO TABLE stg_us_chronic_disease_raw
---     FIELDS TERMINATED BY ','
---     ENCLOSED BY '"'
---     LINES TERMINATED BY '\n'
---     IGNORE 1 ROWS;
+LOAD DATA LOCAL INFILE '/Users/mac/Desktop/Lecture_2433/group_project_111325/data/U.S._Chronic_Disease_Indicators_20251102.csv'
+    INTO TABLE stg_us_chronic_disease_raw
+    FIELDS TERMINATED BY ','
+    ENCLOSED BY '"'
+    LINES TERMINATED BY '\n'
+    IGNORE 1 ROWS;
 
 -- SQLite 示例：
 -- .mode csv
