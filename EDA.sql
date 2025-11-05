@@ -4,6 +4,9 @@
 -- Designed for import into data modeling tools like Erwin.
 -- =================================================================
 
+DROP DATABASE IF EXISTS business_eda;
+CREATE DATABASE business_eda;
+USE business_eda;
 
 -- -----------------------------------------------------
 -- Table: Customer
@@ -39,9 +42,9 @@ CREATE TABLE CustomerAddress (
   CustMiddleInitial CHAR(1) NOT NULL,
   CustSuffix VARCHAR(10) NOT NULL,
   CustDOB DATE NOT NULL,
-  CustAddress1 VARCHAR(255) NOT NULL,
-  CustAddress2 VARCHAR(255),
-  CustCity VARCHAR(100),
+  CustAddress1 VARCHAR(200) NOT NULL,
+  CustAddress2 VARCHAR(200),
+  CustCity VARCHAR(80),
   CustState VARCHAR(50),
   CustZip VARCHAR(10),
   AnnualStartDate DATE NOT NULL,
@@ -69,7 +72,7 @@ CREATE TABLE CustomerAlias (
   AliasDOB DATE NOT NULL,
   AliasSuffix VARCHAR(10),
   AliasSalutation VARCHAR(20),
-  AliasMailAddress VARCHAR(255),
+  AliasMailAddress VARCHAR(200),
   Gender CHAR(1),
   SSN_TIN VARCHAR(11),
   SSNType VARCHAR(20),
@@ -148,9 +151,9 @@ CREATE TABLE CompanyCode (
 CREATE TABLE Account (
   AccountName VARCHAR(100) NOT NULL,
   AccountName2 VARCHAR(100),
-  LocationAddress1 VARCHAR(255) NOT NULL,
-  LocationAddress2 VARCHAR(255),
-  LocationCity VARCHAR(100) NOT NULL,
+  LocationAddress1 VARCHAR(200) NOT NULL,
+  LocationAddress2 VARCHAR(200),
+  LocationCity VARCHAR(80) NOT NULL,
   LocationState VARCHAR(50) NOT NULL,
   LocationZip VARCHAR(10) NOT NULL,
   CompanyCode VARCHAR(10) NOT NULL,
@@ -236,19 +239,19 @@ CREATE TABLE AcctAdmin (
 -- Table: AccountRelation
 -- -----------------------------------------------------
 CREATE TABLE AccountRelation (
-  AccountName VARCHAR(100) NOT NULL,
-  AccountName2 VARCHAR(100),
+  AccountName VARCHAR(80) NOT NULL,
+  AccountName2 VARCHAR(80),
   CompanyCode VARCHAR(10) NOT NULL,
-  LocationAddress1 VARCHAR(255) NOT NULL,
-  LocationAddress2 VARCHAR(255),
-  LocationCity VARCHAR(100) NOT NULL,
+  LocationAddress1 VARCHAR(150) NOT NULL,
+  LocationAddress2 VARCHAR(150),
+  LocationCity VARCHAR(60) NOT NULL,
   LocationState VARCHAR(50) NOT NULL,
   LocationZip VARCHAR(10) NOT NULL,
-  MasterAcctName VARCHAR(100) NOT NULL,
-  MasterAcctName2 VARCHAR(100),
-  MasterAcctAddress1 VARCHAR(255) NOT NULL,
-  MasterAcctAddress2 VARCHAR(255),
-  MasterAcctCity VARCHAR(100) NOT NULL,
+  MasterAcctName VARCHAR(80) NOT NULL,
+  MasterAcctName2 VARCHAR(80),
+  MasterAcctAddress1 VARCHAR(150) NOT NULL,
+  MasterAcctAddress2 VARCHAR(150),
+  MasterAcctCity VARCHAR(60) NOT NULL,
   MasterAcctState VARCHAR(50) NOT NULL,
   MasterAcctZip VARCHAR(10) NOT NULL,
   RelationshipType VARCHAR(50) NOT NULL,
@@ -265,11 +268,11 @@ CREATE TABLE AccountRelation (
 -- Table: AccountEligibility
 -- -----------------------------------------------------
 CREATE TABLE AccountEligibility (
-  AccountName VARCHAR(100) NOT NULL,
-  AccountName2 VARCHAR(100),
-  LocationAddress1 VARCHAR(255) NOT NULL,
-  LocationAddress2 VARCHAR(255),
-  LocationCity VARCHAR(100) NOT NULL,
+  AccountName VARCHAR(80) NOT NULL,
+  AccountName2 VARCHAR(80),
+  LocationAddress1 VARCHAR(150) NOT NULL,
+  LocationAddress2 VARCHAR(150),
+  LocationCity VARCHAR(60) NOT NULL,
   LocationState VARCHAR(50) NOT NULL,
   LocationZip VARCHAR(10) NOT NULL,
   StartDate DATE NOT NULL,
@@ -286,11 +289,11 @@ CREATE TABLE AccountEligibility (
 -- Table: Account_Member
 -- -----------------------------------------------------
 CREATE TABLE Account_Member (
-  AccountName VARCHAR(100) NOT NULL,
-  AccountName2 VARCHAR(100),
-  LocationAddress1 VARCHAR(255) NOT NULL,
-  LocationAddress2 VARCHAR(255),
-  LocationCity VARCHAR(100) NOT NULL,
+  AccountName VARCHAR(80) NOT NULL,
+  AccountName2 VARCHAR(80),
+  LocationAddress1 VARCHAR(150) NOT NULL,
+  LocationAddress2 VARCHAR(150),
+  LocationCity VARCHAR(60) NOT NULL,
   LocationState VARCHAR(50) NOT NULL,
   LocationZip VARCHAR(10) NOT NULL,
   CustLastName VARCHAR(100) NOT NULL,
@@ -320,7 +323,7 @@ CREATE TABLE Account_Member (
 -- Table: Territory
 -- -----------------------------------------------------
 CREATE TABLE Territory (
-  TerritoryName VARCHAR(100) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
   StartDate DATE NOT NULL,
   EndDate DATE,
   CONSTRAINT PK_Territory PRIMARY KEY (TerritoryName, StartDate)
@@ -339,8 +342,8 @@ CREATE TABLE State (
 -- Table: StateOperation
 -- -----------------------------------------------------
 CREATE TABLE StateOperation (
-  StateOperationName VARCHAR(100) NOT NULL,
-  TerritoryName VARCHAR(100) NOT NULL,
+  StateOperationName VARCHAR(60) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
   StartDate DATE NOT NULL,
   EndDate DATE,
   CONSTRAINT PK_StateOperation PRIMARY KEY (StateOperationName, TerritoryName, StartDate),
@@ -376,9 +379,9 @@ CREATE TABLE CountyZipCode (
 -- Table: StateOperationDivision
 -- -----------------------------------------------------
 CREATE TABLE StateOperationDivision (
-  StateOperationDivisionName VARCHAR(100) NOT NULL,
-  StateOperationName VARCHAR(100) NOT NULL,
-  TerritoryName VARCHAR(100) NOT NULL,
+  StateOperationDivisionName VARCHAR(60) NOT NULL,
+  StateOperationName VARCHAR(60) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
   StateCode VARCHAR(2) NOT NULL,
   StartDate DATE NOT NULL,
   EndDate DATE,
@@ -393,10 +396,10 @@ CREATE TABLE StateOperationDivision (
 -- Table: Region
 -- -----------------------------------------------------
 CREATE TABLE Region (
-  RegionName VARCHAR(100) NOT NULL,
-  StateOperationDivisionName VARCHAR(100) NOT NULL,
-  StateOperationName VARCHAR(100) NOT NULL,
-  TerritoryName VARCHAR(100) NOT NULL,
+  RegionName VARCHAR(60) NOT NULL,
+  StateOperationDivisionName VARCHAR(60) NOT NULL,
+  StateOperationName VARCHAR(60) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
   StateCode VARCHAR(2) NOT NULL,
   StartDate DATE NOT NULL,
   EndDate DATE,
@@ -409,11 +412,11 @@ CREATE TABLE Region (
 -- Table: District
 -- -----------------------------------------------------
 CREATE TABLE District (
-  DistrictName VARCHAR(100) NOT NULL,
-  RegionName VARCHAR(100) NOT NULL,
-  StateOperationDivisionName VARCHAR(100) NOT NULL,
-  StateOperationName VARCHAR(100) NOT NULL,
-  TerritoryName VARCHAR(100) NOT NULL,
+  DistrictName VARCHAR(60) NOT NULL,
+  RegionName VARCHAR(60) NOT NULL,
+  StateOperationDivisionName VARCHAR(60) NOT NULL,
+  StateOperationName VARCHAR(60) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
   StateCode VARCHAR(2) NOT NULL,
   StartDate DATE NOT NULL,
   EndDate DATE,
@@ -482,11 +485,11 @@ CREATE TABLE BAccAdmin (
 -- Note: Renamed from "BillingAccount-h" for SQL compatibility.
 -- -----------------------------------------------------
 CREATE TABLE BillingAccount (
-  BAccName VARCHAR(100) NOT NULL,
-  BAccName2 VARCHAR(100),
-  BillingAddress1 VARCHAR(255) NOT NULL,
-  BillingAddress2 VARCHAR(255),
-  BillingCity VARCHAR(100) NOT NULL,
+  BAccName VARCHAR(80) NOT NULL,
+  BAccName2 VARCHAR(80),
+  BillingAddress1 VARCHAR(150) NOT NULL,
+  BillingAddress2 VARCHAR(150),
+  BillingCity VARCHAR(60) NOT NULL,
   BillingState VARCHAR(50) NOT NULL,
   BillingZip VARCHAR(10) NOT NULL,
   GroupNumber VARCHAR(50),
@@ -505,11 +508,11 @@ CREATE TABLE BillingAccount (
   BillingFileFlag CHAR(1),
   FTPSite VARCHAR(255),
   NextVisitDate DATE,
-  TerritoryName VARCHAR(100),
-  StateOperationName VARCHAR(100),
-  StateOperationDivisionName VARCHAR(100),
+  TerritoryName VARCHAR(60),
+  StateOperationName VARCHAR(60),
+  StateOperationDivisionName VARCHAR(60),
   StateCode VARCHAR(2),
-  RegionName VARCHAR(100),
+  RegionName VARCHAR(60),
   StartDate DATE,
   CONSTRAINT PK_BillingAccount PRIMARY KEY (BAccName, BillingAddress1, BillingCity, BillingState, BillingZip),
   CONSTRAINT FK_BillingAccount_GeoCode FOREIGN KEY (GeoCode)
@@ -524,11 +527,11 @@ CREATE TABLE BillingAccount (
 -- -----------------------------------------------------
 CREATE TABLE Account_Product (
   LineOfBusiness VARCHAR(100) NOT NULL,
-  AccountName VARCHAR(100) NOT NULL,
-  AccountName2 VARCHAR(100),
-  LocationAddress1 VARCHAR(255) NOT NULL,
-  LocationAddress2 VARCHAR(255),
-  LocationCity VARCHAR(100) NOT NULL,
+  AccountName VARCHAR(80) NOT NULL,
+  AccountName2 VARCHAR(80),
+  LocationAddress1 VARCHAR(150) NOT NULL,
+  LocationAddress2 VARCHAR(150),
+  LocationCity VARCHAR(60) NOT NULL,
   LocationState VARCHAR(50) NOT NULL,
   LocationZip VARCHAR(10) NOT NULL,
   StartDate DATE NOT NULL,
@@ -545,11 +548,11 @@ CREATE TABLE Account_Product (
 -- Table: BillingAccountEligibility
 -- -----------------------------------------------------
 CREATE TABLE BillingAccountEligibility (
-  BAccName VARCHAR(100) NOT NULL,
-  BAccName2 VARCHAR(100),
-  BillingAddress1 VARCHAR(255) NOT NULL,
-  BillingAddress2 VARCHAR(255),
-  BillingCity VARCHAR(100) NOT NULL,
+  BAccName VARCHAR(80) NOT NULL,
+  BAccName2 VARCHAR(80),
+  BillingAddress1 VARCHAR(150) NOT NULL,
+  BillingAddress2 VARCHAR(150),
+  BillingCity VARCHAR(60) NOT NULL,
   BillingState VARCHAR(50) NOT NULL,
   BillingZip VARCHAR(10) NOT NULL,
   StartDate DATE NOT NULL,
@@ -570,19 +573,19 @@ CREATE TABLE BillingAccountEligibility (
 -- Note: Junction table between Account and BillingAccount.
 -- -----------------------------------------------------
 CREATE TABLE Account_BillingAccount (
-  AccountName VARCHAR(100) NOT NULL,
-  AccountName2 VARCHAR(100),
-  LocationAddress1 VARCHAR(255) NOT NULL,
-  LocationAddress2 VARCHAR(255),
-  LocationCity VARCHAR(100) NOT NULL,
+  AccountName VARCHAR(60) NOT NULL,
+  AccountName2 VARCHAR(60),
+  LocationAddress1 VARCHAR(100) NOT NULL,
+  LocationAddress2 VARCHAR(100),
+  LocationCity VARCHAR(50) NOT NULL,
   LocationState VARCHAR(50) NOT NULL,
   LocationZip VARCHAR(10) NOT NULL,
   CompanyCode VARCHAR(10) NOT NULL,
-  BAccName VARCHAR(100) NOT NULL,
-  BAccName2 VARCHAR(100),
-  BillingAddress1 VARCHAR(255) NOT NULL,
-  BillingAddress2 VARCHAR(255),
-  BillingCity VARCHAR(100) NOT NULL,
+  BAccName VARCHAR(60) NOT NULL,
+  BAccName2 VARCHAR(60),
+  BillingAddress1 VARCHAR(100) NOT NULL,
+  BillingAddress2 VARCHAR(100),
+  BillingCity VARCHAR(50) NOT NULL,
   BillingState VARCHAR(50) NOT NULL,
   BillingZip VARCHAR(10) NOT NULL,
   RelationshipType VARCHAR(50) NOT NULL,
@@ -623,11 +626,11 @@ CREATE TABLE Account_BillingAccount (
 -- Table: AccountLegacyAlias
 -- -----------------------------------------------------
 CREATE TABLE AccountLegacyAlias (
-  AccountName VARCHAR(100) NOT NULL,
-  AccountName2 VARCHAR(100),
-  LocationAddress1 VARCHAR(255) NOT NULL,
-  LocationAddress2 VARCHAR(255),
-  LocationCity VARCHAR(100) NOT NULL,
+  AccountName VARCHAR(80) NOT NULL,
+  AccountName2 VARCHAR(80),
+  LocationAddress1 VARCHAR(150) NOT NULL,
+  LocationAddress2 VARCHAR(150),
+  LocationCity VARCHAR(60) NOT NULL,
   LocationState VARCHAR(50) NOT NULL,
   LocationZip VARCHAR(10) NOT NULL,
   AliasSource VARCHAR(100) NOT NULL,
@@ -835,18 +838,18 @@ CREATE TABLE Material (
 -- Table: Prospect
 -- -----------------------------------------------------
 CREATE TABLE Prospect (
-  ProspectName VARCHAR(100) NOT NULL,
-  ProspectAddress1 VARCHAR(255) NOT NULL,
-  ProspectAddress2 VARCHAR(255) NOT NULL,
-  ProspectCity VARCHAR(100) NOT NULL,
+  ProspectName VARCHAR(80) NOT NULL,
+  ProspectAddress1 VARCHAR(150) NOT NULL,
+  ProspectAddress2 VARCHAR(150) NOT NULL,
+  ProspectCity VARCHAR(60) NOT NULL,
   ProspectState VARCHAR(50) NOT NULL,
   ProspectZip VARCHAR(10) NOT NULL,
   -- -----------------------------------------------------
-  AccountName VARCHAR(100),
-  AccountName2 VARCHAR(100),
-  LocationAddress1 VARCHAR(255),
-  LocationAddress2 VARCHAR(255),
-  LocationCity VARCHAR(100),
+  AccountName VARCHAR(80),
+  AccountName2 VARCHAR(80),
+  LocationAddress1 VARCHAR(150),
+  LocationAddress2 VARCHAR(150),
+  LocationCity VARCHAR(60),
   LocationState VARCHAR(50),
   LocationZip VARCHAR(10),
   CompanyCode VARCHAR(10),
@@ -868,10 +871,10 @@ CREATE TABLE Prospect (
 -- Table: ProspectItem
 -- -----------------------------------------------------
 CREATE TABLE ProspectItem (
-  ProspectName VARCHAR(100) NOT NULL,
-  ProspectAddress1 VARCHAR(255) NOT NULL,
-  ProspectAddress2 VARCHAR(255) NOT NULL,
-  ProspectCity VARCHAR(100) NOT NULL,
+  ProspectName VARCHAR(80) NOT NULL,
+  ProspectAddress1 VARCHAR(150) NOT NULL,
+  ProspectAddress2 VARCHAR(150) NOT NULL,
+  ProspectCity VARCHAR(60) NOT NULL,
   ProspectState VARCHAR(50) NOT NULL,
   ProspectZip VARCHAR(10) NOT NULL,
   ItemName VARCHAR(100) NOT NULL,
@@ -900,11 +903,11 @@ CREATE TABLE Contract (
   ActivityStatusDate DATE,
   CoverageType VARCHAR(50),
   BillingMethod VARCHAR(50),
-  AccountName VARCHAR(100),
-  AccountName2 VARCHAR(100),
-  LocationAddress1 VARCHAR(255),
-  LocationAddress2 VARCHAR(255),
-  LocationCity VARCHAR(100),
+  AccountName VARCHAR(80),
+  AccountName2 VARCHAR(80),
+  LocationAddress1 VARCHAR(150),
+  LocationAddress2 VARCHAR(150),
+  LocationCity VARCHAR(60),
   LocationState VARCHAR(50),
   LocationZip VARCHAR(10),
   CompanyCode VARCHAR(10),
@@ -1245,10 +1248,10 @@ CREATE TABLE ContractingPartyRole (
 -- Table: FinancialInstitution
 -- -----------------------------------------------------
 CREATE TABLE FinancialInstitution (
-  FIName VARCHAR(100) NOT NULL,
-  FIAddress1 VARCHAR(255) NOT NULL,
-  FIAddress2 VARCHAR(255) NOT NULL,
-  FICity VARCHAR(100) NOT NULL,
+  FIName VARCHAR(80) NOT NULL,
+  FIAddress1 VARCHAR(150) NOT NULL,
+  FIAddress2 VARCHAR(150) NOT NULL,
+  FICity VARCHAR(60) NOT NULL,
   FIState VARCHAR(50) NOT NULL,
   FIZip VARCHAR(10) NOT NULL,
   FIPhone VARCHAR(20) NOT NULL,
@@ -1270,16 +1273,16 @@ CREATE TABLE Claim (
 -- Table: Claimant_Participant
 -- -----------------------------------------------------
 CREATE TABLE Claimant_Participant (
-  ContractNumber VARCHAR(100) NOT NULL,
-  ClaimNumber VARCHAR(100) NOT NULL,
-  LineOfBusiness VARCHAR(100) NOT NULL,
-  SeriesName VARCHAR(100) NOT NULL,
-  PlanName VARCHAR(100) NOT NULL,
-  CustLastName VARCHAR(100) NOT NULL,
-  CustFirstName VARCHAR(100) NOT NULL,
+  ContractNumber VARCHAR(80) NOT NULL,
+  ClaimNumber VARCHAR(80) NOT NULL,
+  LineOfBusiness VARCHAR(80) NOT NULL,
+  SeriesName VARCHAR(80) NOT NULL,
+  PlanName VARCHAR(80) NOT NULL,
+  CustLastName VARCHAR(80) NOT NULL,
+  CustFirstName VARCHAR(80) NOT NULL,
   CustDOB DATE NOT NULL,
-  ParticipantLastName VARCHAR(100) NOT NULL,
-  ParticipantFirstName VARCHAR(100) NOT NULL,
+  ParticipantLastName VARCHAR(80) NOT NULL,
+  ParticipantFirstName VARCHAR(80) NOT NULL,
   ParticipantDOB DATE NOT NULL,
   CustMiddleInitial CHAR(1) NOT NULL,
   ParticipantMiddleInitial CHAR(1) NOT NULL,
@@ -1332,16 +1335,16 @@ CREATE TABLE ClaimImage (
 -- -----------------------------------------------------
 CREATE TABLE ClaimantImage (
   DocumentID VARCHAR(50) NOT NULL,
-  ContractNumber VARCHAR(100) NOT NULL,
-  ClaimNumber VARCHAR(100) NOT NULL,
-  LineOfBusiness VARCHAR(100) NOT NULL,
-  SeriesName VARCHAR(100) NOT NULL,
-  PlanName VARCHAR(100) NOT NULL,
-  CustLastName VARCHAR(100) NOT NULL,
-  CustFirstName VARCHAR(100) NOT NULL,
+  ContractNumber VARCHAR(80) NOT NULL,
+  ClaimNumber VARCHAR(80) NOT NULL,
+  LineOfBusiness VARCHAR(80) NOT NULL,
+  SeriesName VARCHAR(80) NOT NULL,
+  PlanName VARCHAR(80) NOT NULL,
+  CustLastName VARCHAR(80) NOT NULL,
+  CustFirstName VARCHAR(80) NOT NULL,
   CustDOB DATE NOT NULL,
-  ParticipantLastName VARCHAR(100) NOT NULL,
-  ParticipantFirstName VARCHAR(100) NOT NULL,
+  ParticipantLastName VARCHAR(80) NOT NULL,
+  ParticipantFirstName VARCHAR(80) NOT NULL,
   ParticipantDOB DATE NOT NULL,
   ImageFileLocation VARCHAR(500),
   DateReceived DATE,
@@ -1361,11 +1364,11 @@ CREATE TABLE ClaimantImage (
 -- -----------------------------------------------------
 CREATE TABLE Invoice (
   InvoiceNumber VARCHAR(100) NOT NULL,
-  BAccName VARCHAR(100) NOT NULL,
-  BAccName2 VARCHAR(100),
-  BillingAddress1 VARCHAR(255) NOT NULL,
-  BillingAddress2 VARCHAR(255),
-  BillingCity VARCHAR(100) NOT NULL,
+  BAccName VARCHAR(80) NOT NULL,
+  BAccName2 VARCHAR(80),
+  BillingAddress1 VARCHAR(150) NOT NULL,
+  BillingAddress2 VARCHAR(150),
+  BillingCity VARCHAR(60) NOT NULL,
   BillingState VARCHAR(50) NOT NULL,
   BillingZip VARCHAR(10) NOT NULL,
   CustLastName VARCHAR(100) NOT NULL,
@@ -1388,11 +1391,11 @@ CREATE TABLE Invoice (
 -- -----------------------------------------------------
 CREATE TABLE InvoiceDetail (
   InvoiceNumber VARCHAR(100) NOT NULL,
-  BAccName VARCHAR(100) NOT NULL,
-  BAccName2 VARCHAR(100),
-  BillingAddress1 VARCHAR(255) NOT NULL,
-  BillingAddress2 VARCHAR(255),
-  BillingCity VARCHAR(100) NOT NULL,
+  BAccName VARCHAR(80) NOT NULL,
+  BAccName2 VARCHAR(80),
+  BillingAddress1 VARCHAR(150) NOT NULL,
+  BillingAddress2 VARCHAR(150),
+  BillingCity VARCHAR(60) NOT NULL,
   BillingState VARCHAR(50) NOT NULL,
   BillingZip VARCHAR(10) NOT NULL,
   InvoiceLineNumber INT NOT NULL,
@@ -1418,13 +1421,13 @@ CREATE TABLE InvoiceDetail (
 -- -----------------------------------------------------
 CREATE TABLE InvoiceDetailActivity (
   InvoiceNumber VARCHAR(100) NOT NULL,
-  BAccName VARCHAR(100) NOT NULL,
-  BillingAddress1 VARCHAR(255) NOT NULL,
-  BillingAddress2 VARCHAR(255),
-  BillingCity VARCHAR(100) NOT NULL,
+  BAccName VARCHAR(80) NOT NULL,
+  BillingAddress1 VARCHAR(150) NOT NULL,
+  BillingAddress2 VARCHAR(150),
+  BillingCity VARCHAR(60) NOT NULL,
   BillingState VARCHAR(50) NOT NULL,
   BillingZip VARCHAR(10) NOT NULL,
-  BAccName2 VARCHAR(100),
+  BAccName2 VARCHAR(80),
   CONSTRAINT PK_InvoiceDetailActivity PRIMARY KEY (InvoiceNumber, BAccName, BillingAddress1, BillingCity, BillingState, BillingZip),
   CONSTRAINT FK_InvDetailActivity_Invoice FOREIGN KEY (InvoiceNumber)
     REFERENCES Invoice (InvoiceNumber),
@@ -1437,11 +1440,11 @@ CREATE TABLE InvoiceDetailActivity (
 -- -----------------------------------------------------
 CREATE TABLE Remittance (
   ContractNumber VARCHAR(100) NOT NULL,
-  FIName VARCHAR(100) NOT NULL,
-  FIAddress1 VARCHAR(255) NOT NULL,
+  FIName VARCHAR(80) NOT NULL,
+  FIAddress1 VARCHAR(150) NOT NULL,
   FIPhone VARCHAR(20) NOT NULL,
-  FIAddress2 VARCHAR(255) NOT NULL,
-  FICity VARCHAR(100) NOT NULL,
+  FIAddress2 VARCHAR(150) NOT NULL,
+  FICity VARCHAR(60) NOT NULL,
   FIState VARCHAR(50) NOT NULL,
   FIZip VARCHAR(10) NOT NULL,
   LineOfBusiness VARCHAR(100) NOT NULL,
@@ -1489,7 +1492,7 @@ CREATE TABLE Contest (
 CREATE TABLE ContestCriteria (
   ContestName VARCHAR(100) NOT NULL,
   StartDate DATE NOT NULL,
-  CriteriaText TEXT NOT NULL,
+  CriteriaText VARCHAR(500) NOT NULL,
   ThresholdValue INT,
   CONSTRAINT PK_ContestCriteria PRIMARY KEY (ContestName, StartDate, CriteriaText),
   CONSTRAINT FK_ContestCriteria_Contest FOREIGN KEY (ContestName, StartDate)
@@ -1500,11 +1503,11 @@ CREATE TABLE ContestCriteria (
 -- Table: CoordPositionProdChain
 -- -----------------------------------------------------
 CREATE TABLE CoordPositionProdChain (
-  TerritoryName VARCHAR(100) NOT NULL,
-  StateOperationName VARCHAR(100) NOT NULL,
-  StateOperationDivisionName VARCHAR(100) NOT NULL,
-  RegionName VARCHAR(100) NOT NULL,
-  DistrictName VARCHAR(100) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
+  StateOperationName VARCHAR(60) NOT NULL,
+  StateOperationDivisionName VARCHAR(60) NOT NULL,
+  RegionName VARCHAR(60) NOT NULL,
+  DistrictName VARCHAR(60) NOT NULL,
   StateCode VARCHAR(2) NOT NULL,
   StartDate DATE NOT NULL,
   EndDate DATE,
@@ -1523,17 +1526,17 @@ CREATE TABLE CoordPositionProdChain (
 -- Note: This is a junction table linking the position chain to a contract premium.
 -- -----------------------------------------------------
 CREATE TABLE CoordPosition_ProductionAsset (
-  ContractNumber VARCHAR(100) NOT NULL,
-  RiderName VARCHAR(100) NOT NULL,
-  TerritoryName VARCHAR(100) NOT NULL,
-  StateOperationName VARCHAR(100) NOT NULL,
-  StateOperationDivisionName VARCHAR(100) NOT NULL,
-  DistrictName VARCHAR(100) NOT NULL,
-  RegionName VARCHAR(100) NOT NULL,
-  LineOfBusiness VARCHAR(100) NOT NULL,
-  SeriesName VARCHAR(100) NOT NULL,
+  ContractNumber VARCHAR(60) NOT NULL,
+  RiderName VARCHAR(60) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
+  StateOperationName VARCHAR(60) NOT NULL,
+  StateOperationDivisionName VARCHAR(60) NOT NULL,
+  DistrictName VARCHAR(60) NOT NULL,
+  RegionName VARCHAR(60) NOT NULL,
+  LineOfBusiness VARCHAR(60) NOT NULL,
+  SeriesName VARCHAR(60) NOT NULL,
   StateCode VARCHAR(2) NOT NULL,
-  PlanName VARCHAR(100) NOT NULL,
+  PlanName VARCHAR(60) NOT NULL,
   PremiumCode VARCHAR(50) NOT NULL,
   StartDate DATE NOT NULL,
   -- -----------------------------------------------------
@@ -1590,12 +1593,12 @@ CREATE TABLE Level (
 -- Table: DistrictCoordinators
 -- -----------------------------------------------------
 CREATE TABLE DistrictCoordinators (
-  DistrictName VARCHAR(100) NOT NULL,
-  RegionName VARCHAR(100) NOT NULL,
+  DistrictName VARCHAR(60) NOT NULL,
+  RegionName VARCHAR(60) NOT NULL,
   RoleType VARCHAR(100) NOT NULL,
-  StateOperationDivisionName VARCHAR(100) NOT NULL,
-  TerritoryName VARCHAR(100) NOT NULL,
-  StateOperationName VARCHAR(100) NOT NULL,
+  StateOperationDivisionName VARCHAR(60) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
+  StateOperationName VARCHAR(60) NOT NULL,
   StateCode VARCHAR(2) NOT NULL,
   LevelNum INT NOT NULL,
   StartDate DATE NOT NULL,
@@ -1636,12 +1639,12 @@ CREATE TABLE DistrictCoordinators (
 -- -----------------------------------------------------
 CREATE TABLE DistrictAssistant (
   RoleType VARCHAR(100) NOT NULL,
-  DistrictName VARCHAR(100) NOT NULL,
-  RegionName VARCHAR(100) NOT NULL,
+  DistrictName VARCHAR(60) NOT NULL,
+  RegionName VARCHAR(60) NOT NULL,
   AdminName VARCHAR(100) NOT NULL,
-  StateOperationDivisionName VARCHAR(100) NOT NULL,
-  TerritoryName VARCHAR(100) NOT NULL,
-  StateOperationName VARCHAR(100) NOT NULL,
+  StateOperationDivisionName VARCHAR(60) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
+  StateOperationName VARCHAR(60) NOT NULL,
   StateCode VARCHAR(2) NOT NULL,
   LevelNum INT NOT NULL,
   StartDate DATE NOT NULL,
@@ -1673,11 +1676,11 @@ CREATE TABLE DistrictAssistant (
 -- Table: ASC (Associate Sales Coordinator)
 -- -----------------------------------------------------
 CREATE TABLE ASC_Table (
-  DistrictName VARCHAR(100) NOT NULL,
-  RegionName VARCHAR(100) NOT NULL,
-  StateOperationDivisionName VARCHAR(100) NOT NULL,
-  TerritoryName VARCHAR(100) NOT NULL,
-  StateOperationName VARCHAR(100) NOT NULL,
+  DistrictName VARCHAR(60) NOT NULL,
+  RegionName VARCHAR(60) NOT NULL,
+  StateOperationDivisionName VARCHAR(60) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
+  StateOperationName VARCHAR(60) NOT NULL,
   StateCode VARCHAR(2) NOT NULL,
   LevelNum INT NOT NULL,
   StartDate DATE NOT NULL,
@@ -1762,11 +1765,11 @@ CREATE TABLE AssocPhone (
 -- Table: RegionalCoordinators
 -- -----------------------------------------------------
 CREATE TABLE RegionalCoordinators (
-  RegionName VARCHAR(100) NOT NULL,
-  StateOperationDivisionName VARCHAR(100) NOT NULL,
+  RegionName VARCHAR(60) NOT NULL,
+  StateOperationDivisionName VARCHAR(60) NOT NULL,
   RoleType VARCHAR(100) NOT NULL,
-  TerritoryName VARCHAR(100) NOT NULL,
-  StateOperationName VARCHAR(100) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
+  StateOperationName VARCHAR(60) NOT NULL,
   StateCode VARCHAR(2) NOT NULL,
   LevelNum INT NOT NULL,
   StartDate DATE NOT NULL,
@@ -1807,11 +1810,11 @@ CREATE TABLE RegionalCoordinators (
 -- -----------------------------------------------------
 CREATE TABLE RegionAssistant (
   RoleType VARCHAR(100) NOT NULL,
-  RegionName VARCHAR(100) NOT NULL,
+  RegionName VARCHAR(60) NOT NULL,
   AdminName VARCHAR(100) NOT NULL,
-  StateOperationDivisionName VARCHAR(100) NOT NULL,
-  TerritoryName VARCHAR(100) NOT NULL,
-  StateOperationName VARCHAR(100) NOT NULL,
+  StateOperationDivisionName VARCHAR(60) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
+  StateOperationName VARCHAR(60) NOT NULL,
   StateCode VARCHAR(2) NOT NULL,
   LevelNum INT NOT NULL,
   StartDate DATE NOT NULL,
@@ -1857,10 +1860,10 @@ CREATE TABLE StateRole (
 -- Table: StateCoordinators
 -- -----------------------------------------------------
 CREATE TABLE StateCoordinators (
-  StateOperationDivisionName VARCHAR(100) NOT NULL,
+  StateOperationDivisionName VARCHAR(60) NOT NULL,
   RoleType VARCHAR(100) NOT NULL,
-  TerritoryName VARCHAR(100) NOT NULL,
-  StateOperationName VARCHAR(100) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
+  StateOperationName VARCHAR(60) NOT NULL,
   StateCode VARCHAR(2) NOT NULL,
   LevelNum INT NOT NULL,
   StartDate DATE NOT NULL,
@@ -1900,10 +1903,10 @@ CREATE TABLE StateCoordinators (
 -- -----------------------------------------------------
 CREATE TABLE StateAssistant (
   RoleType VARCHAR(100) NOT NULL,
-  StateOperationDivisionName VARCHAR(100) NOT NULL,
+  StateOperationDivisionName VARCHAR(60) NOT NULL,
   AdminName VARCHAR(100) NOT NULL,
-  TerritoryName VARCHAR(100) NOT NULL,
-  StateOperationName VARCHAR(100) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
+  StateOperationName VARCHAR(60) NOT NULL,
   StateCode VARCHAR(2) NOT NULL,
   LevelNum INT NOT NULL,
   StartDate DATE NOT NULL,
@@ -1956,7 +1959,7 @@ CREATE TABLE Employee (
 -- Table: TerritoryCoordinator
 -- -----------------------------------------------------
 CREATE TABLE TerritoryCoordinator (
-  TerritoryName VARCHAR(100) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
   EmployeeID VARCHAR(50) NOT NULL,
   StartDate DATE NOT NULL,
   LevelNum INT NOT NULL,
@@ -2144,12 +2147,12 @@ CREATE TABLE ManagerContract (
   ParentLevel INT,
   ParentIssueDate DATE,
   CommissionCode VARCHAR(50),
-  TerritoryName VARCHAR(100),
-  StateOperationName VARCHAR(100),
-  StateOperationDivisionName VARCHAR(100),
+  TerritoryName VARCHAR(60),
+  StateOperationName VARCHAR(60),
+  StateOperationDivisionName VARCHAR(60),
   StateCode VARCHAR(2),
-  RegionName VARCHAR(100),
-  DistrictName VARCHAR(100),
+  RegionName VARCHAR(60),
+  DistrictName VARCHAR(60),
   StartDate DATE,
   EndDate DATE,
   AssocLastName VARCHAR(100) NOT NULL,
@@ -2191,11 +2194,11 @@ CREATE TABLE Account_Associate (
   SitCode VARCHAR(50) NOT NULL,
   CompanyCode VARCHAR(10) NOT NULL,
   WritingNumber VARCHAR(50) NOT NULL,
-  AccountName VARCHAR(100) NOT NULL,
-  AccountName2 VARCHAR(100),
-  LocationAddress1 VARCHAR(255) NOT NULL,
-  LocationAddress2 VARCHAR(255),
-  LocationCity VARCHAR(100) NOT NULL,
+  AccountName VARCHAR(60) NOT NULL,
+  AccountName2 VARCHAR(60),
+  LocationAddress1 VARCHAR(100) NOT NULL,
+  LocationAddress2 VARCHAR(100),
+  LocationCity VARCHAR(50) NOT NULL,
   LocationState VARCHAR(50) NOT NULL,
   LocationZip VARCHAR(10) NOT NULL,
   LevelNum INT NOT NULL,
@@ -2231,11 +2234,11 @@ CREATE TABLE AssociateService (
   SitCode VARCHAR(50) NOT NULL,
   CompanyCode VARCHAR(10) NOT NULL,
   WritingNumber VARCHAR(50) NOT NULL,
-  AccountName VARCHAR(100) NOT NULL,
-  AccountName2 VARCHAR(100),
-  LocationAddress1 VARCHAR(255) NOT NULL,
-  LocationAddress2 VARCHAR(255),
-  LocationCity VARCHAR(100) NOT NULL,
+  AccountName VARCHAR(60) NOT NULL,
+  AccountName2 VARCHAR(60),
+  LocationAddress1 VARCHAR(100) NOT NULL,
+  LocationAddress2 VARCHAR(100),
+  LocationCity VARCHAR(50) NOT NULL,
   LocationState VARCHAR(50) NOT NULL,
   LocationZip VARCHAR(10) NOT NULL,
   LevelNum INT NOT NULL,
@@ -2323,7 +2326,7 @@ CREATE TABLE Premium_MgmtContract (
 --       and a Contest to multiple Territories.
 -- -----------------------------------------------------
 CREATE TABLE Territory_Contest (
-  TerritoryName VARCHAR(100) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
   TerritoryStartDate DATE NOT NULL,
   ContestName VARCHAR(100) NOT NULL,
   ContestStartDate DATE NOT NULL,
@@ -2342,9 +2345,9 @@ CREATE TABLE Territory_Contest (
 --       and a Contest to multiple StateOperationDivisions.
 -- -----------------------------------------------------
 CREATE TABLE StateOpDiv_Contest (
-  StateOperationDivisionName VARCHAR(100) NOT NULL,
-  StateOperationName VARCHAR(100) NOT NULL,
-  TerritoryName VARCHAR(100) NOT NULL,
+  StateOperationDivisionName VARCHAR(60) NOT NULL,
+  StateOperationName VARCHAR(60) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
   StateCode VARCHAR(2) NOT NULL,
   StateOpDivStartDate DATE NOT NULL,
   ContestName VARCHAR(100) NOT NULL,
@@ -2370,10 +2373,10 @@ CREATE TABLE StateOpDiv_Contest (
 -- Note: Junction table to associate multiple ZipCodes with a Region.
 -- -----------------------------------------------------
 CREATE TABLE Region_ZipCode (
-  RegionName VARCHAR(100) NOT NULL,
-  StateOperationDivisionName VARCHAR(100) NOT NULL,
-  StateOperationName VARCHAR(100) NOT NULL,
-  TerritoryName VARCHAR(100) NOT NULL,
+  RegionName VARCHAR(60) NOT NULL,
+  StateOperationDivisionName VARCHAR(60) NOT NULL,
+  StateOperationName VARCHAR(60) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
   StateCode VARCHAR(2) NOT NULL,
   RegionStartDate DATE NOT NULL,
   ZipCode VARCHAR(10) NOT NULL,
@@ -2406,24 +2409,21 @@ CREATE TABLE Region_ZipCode (
 -- -----------------------------------------------------
 CREATE TABLE Regional_Contest (
   -- Foreign Key columns from the Region table
-  RegionName VARCHAR(100) NOT NULL,
-  StateOperationDivisionName VARCHAR(100) NOT NULL,
-  StateOperationName VARCHAR(100) NOT NULL,
-  TerritoryName VARCHAR(100) NOT NULL,
+  RegionName VARCHAR(60) NOT NULL,
+  StateOperationDivisionName VARCHAR(60) NOT NULL,
+  StateOperationName VARCHAR(60) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
   StateCode VARCHAR(2) NOT NULL,
   RegionStartDate DATE NOT NULL,
-  
   -- Foreign Key columns from the Contest table
   ContestName VARCHAR(100) NOT NULL,
   ContestStartDate DATE NOT NULL,
-
   -- Define the composite Primary Key for this junction table
   CONSTRAINT PK_Regional_Contest PRIMARY KEY (
     RegionName, StateOperationDivisionName, StateOperationName, 
     TerritoryName, StateCode, RegionStartDate, 
     ContestName, ContestStartDate
   ),
-
   -- Define the Foreign Key constraint pointing to the Region table
   CONSTRAINT FK_RegionalContest_Region FOREIGN KEY (
     RegionName, StateOperationDivisionName, StateOperationName, 
@@ -2433,7 +2433,6 @@ CREATE TABLE Regional_Contest (
       RegionName, StateOperationDivisionName, StateOperationName, 
       TerritoryName, StateCode, StartDate
     ),
-
   -- Define the Foreign Key constraint pointing to the Contest table
   CONSTRAINT FK_RegionalContest_Contest FOREIGN KEY (ContestName, ContestStartDate)
     REFERENCES Contest (ContestName, StartDate)
@@ -2450,40 +2449,35 @@ CREATE TABLE Regional_Contest (
 --       and a Contest to multiple Districts.
 -- -----------------------------------------------------
 CREATE TABLE District_Contest (
-  -- Foreign Key columns from the District table
-  DistrictName VARCHAR(100) NOT NULL,
-  RegionName VARCHAR(100) NOT NULL,
-  StateOperationDivisionName VARCHAR(100) NOT NULL,
-  StateOperationName VARCHAR(100) NOT NULL,
-  TerritoryName VARCHAR(100) NOT NULL,
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  DistrictName VARCHAR(60) NOT NULL,
+  RegionName VARCHAR(60) NOT NULL,
+  StateOperationDivisionName VARCHAR(60) NOT NULL,
+  StateOperationName VARCHAR(60) NOT NULL,
+  TerritoryName VARCHAR(60) NOT NULL,
   StateCode VARCHAR(2) NOT NULL,
   DistrictStartDate DATE NOT NULL,
-  
-  -- Foreign Key columns from the Contest table
   ContestName VARCHAR(100) NOT NULL,
   ContestStartDate DATE NOT NULL,
-
-  -- Define the composite Primary Key for this junction table
-  CONSTRAINT PK_District_Contest PRIMARY KEY (
-    DistrictName, RegionName, StateOperationDivisionName, StateOperationName, 
-    TerritoryName, StateCode, DistrictStartDate, 
+  CONSTRAINT uq_district_contest_key UNIQUE (
+    DistrictName, RegionName, StateOperationDivisionName, StateOperationName,
+    TerritoryName, StateCode, DistrictStartDate,
     ContestName, ContestStartDate
-  ),
-
-  -- Define the Foreign Key constraint pointing to the District table
-  CONSTRAINT FK_DistrictContest_District FOREIGN KEY (
-    DistrictName, RegionName, StateOperationDivisionName, StateOperationName, 
-    TerritoryName, StateCode, DistrictStartDate
   )
-    REFERENCES District (
-      DistrictName, RegionName, StateOperationDivisionName, StateOperationName, 
-      TerritoryName, StateCode, StartDate
-    ),
+) ENGINE=InnoDB;
 
-  -- Define the Foreign Key constraint pointing to the Contest table
-  CONSTRAINT FK_DistrictContest_Contest FOREIGN KEY (ContestName, ContestStartDate)
-    REFERENCES Contest (ContestName, StartDate)
-);
+ALTER TABLE District_Contest
+  ADD CONSTRAINT FK_DistrictContest_District FOREIGN KEY (
+    DistrictName, RegionName, StateOperationDivisionName, StateOperationName,
+    TerritoryName, StateCode, DistrictStartDate
+  ) REFERENCES District (
+    DistrictName, RegionName, StateOperationDivisionName, StateOperationName,
+    TerritoryName, StateCode, StartDate
+  );
+
+ALTER TABLE District_Contest
+  ADD CONSTRAINT FK_DistrictContest_Contest FOREIGN KEY (ContestName, ContestStartDate)
+  REFERENCES Contest (ContestName, StartDate);
 
 -- -----------------------------------------------------
 -- Table: Assoc_Contest
@@ -2491,35 +2485,30 @@ CREATE TABLE District_Contest (
 --       and a Contest to multiple Associates.
 -- -----------------------------------------------------
 CREATE TABLE Assoc_Contest (
-  -- Foreign Key columns from the Associate table
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
   AssocLastName VARCHAR(100) NOT NULL,
   AssocFirstName VARCHAR(100) NOT NULL,
   AssocMiddleInitial CHAR(1) NOT NULL,
   AssocSuffix VARCHAR(10) NOT NULL,
   AssocDOB DATE NOT NULL,
-
-  -- Foreign Key columns from the Contest table
   ContestName VARCHAR(100) NOT NULL,
   ContestStartDate DATE NOT NULL,
-
-  -- Define the composite Primary Key for this junction table
-  CONSTRAINT PK_Assoc_Contest PRIMARY KEY (
-    AssocLastName, AssocFirstName, AssocMiddleInitial, AssocSuffix, AssocDOB, 
+  CONSTRAINT uq_assoc_contest_key UNIQUE (
+    AssocLastName, AssocFirstName, AssocMiddleInitial, AssocSuffix, AssocDOB,
     ContestName, ContestStartDate
-  ),
-
-  -- Define the Foreign Key constraint pointing to the Associate table
-  CONSTRAINT FK_AssocContest_Associate FOREIGN KEY (
-    AssocLastName, AssocFirstName, AssocMiddleInitial, AssocSuffix, AssocDOB
   )
-    REFERENCES Associate (
-      AssocLastName, AssocFirstName, AssocMiddleInitial, AssocSuffix, AssocDOB
-    ),
+) ENGINE=InnoDB;
 
-  -- Define the Foreign Key constraint pointing to the Contest table
-  CONSTRAINT FK_AssocContest_Contest FOREIGN KEY (ContestName, ContestStartDate)
-    REFERENCES Contest (ContestName, StartDate)
-);
+ALTER TABLE Assoc_Contest
+  ADD CONSTRAINT FK_AssocContest_Associate FOREIGN KEY (
+    AssocLastName, AssocFirstName, AssocMiddleInitial, AssocSuffix, AssocDOB
+  ) REFERENCES Associate (
+    AssocLastName, AssocFirstName, AssocMiddleInitial, AssocSuffix, AssocDOB
+  );
+
+ALTER TABLE Assoc_Contest
+  ADD CONSTRAINT FK_AssocContest_Contest FOREIGN KEY (ContestName, ContestStartDate)
+  REFERENCES Contest (ContestName, StartDate);
 
 -- =================================================================
 -- SQL DDL for LegacyPolicy_Account Junction Table
@@ -2531,47 +2520,41 @@ CREATE TABLE Assoc_Contest (
 -- Note: Junction table to link a legacy account alias to a modern contract/policy.
 -- -----------------------------------------------------
 CREATE TABLE LegacyPolicy_Account (
-  -- Foreign Key columns from the AccountLegacyAlias table
-  AccountName VARCHAR(100) NOT NULL,
-  LocationAddress1 VARCHAR(255) NOT NULL,
-  LocationCity VARCHAR(100) NOT NULL,
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  AccountName VARCHAR(60) NOT NULL,
+  LocationAddress1 VARCHAR(100) NOT NULL,
+  LocationCity VARCHAR(50) NOT NULL,
   LocationState VARCHAR(50) NOT NULL,
   LocationZip VARCHAR(10) NOT NULL,
   AliasSource VARCHAR(100) NOT NULL,
   AliasID VARCHAR(50) NOT NULL,
   CompanyCode VARCHAR(10) NOT NULL,
-
-  -- Foreign Key columns from the Contract table
-  ContractNumber VARCHAR(100) NOT NULL,
-  LineOfBusiness VARCHAR(100) NOT NULL,
-  SeriesName VARCHAR(100) NOT NULL,
-  PlanName VARCHAR(100) NOT NULL,
-
-  -- Define the composite Primary Key for this junction table
-  CONSTRAINT PK_LegacyPolicy_Account PRIMARY KEY (
-    AccountName, LocationAddress1, LocationCity, LocationState, LocationZip, 
-    AliasSource, AliasID, CompanyCode, ContractNumber, 
+  ContractNumber VARCHAR(50) NOT NULL,
+  LineOfBusiness VARCHAR(50) NOT NULL,
+  SeriesName VARCHAR(50) NOT NULL,
+  PlanName VARCHAR(50) NOT NULL,
+  CONSTRAINT uq_legacy_policy_account_key UNIQUE (
+    AccountName, LocationAddress1, LocationCity, LocationState, LocationZip,
+    AliasSource, AliasID, CompanyCode, ContractNumber,
     LineOfBusiness, SeriesName, PlanName
-  ),
+  )
+) ENGINE=InnoDB;
 
-  -- Define the Foreign Key constraint pointing to the AccountLegacyAlias table
-  CONSTRAINT FK_LegacyPolicy_AccountLegacyAlias FOREIGN KEY (
-    AccountName, LocationAddress1, LocationCity, LocationState, LocationZip, 
+ALTER TABLE LegacyPolicy_Account
+  ADD CONSTRAINT FK_LegacyPolicy_AccountLegacyAlias FOREIGN KEY (
+    AccountName, LocationAddress1, LocationCity, LocationState, LocationZip,
     AliasSource, AliasID, CompanyCode
-  )
-    REFERENCES AccountLegacyAlias (
-      AccountName, LocationAddress1, LocationCity, LocationState, LocationZip, 
-      AliasSource, AliasID, CompanyCode
-    ),
+  ) REFERENCES AccountLegacyAlias (
+    AccountName, LocationAddress1, LocationCity, LocationState, LocationZip,
+    AliasSource, AliasID, CompanyCode
+  );
 
-  -- Define the Foreign Key constraint pointing to the Contract table
-  CONSTRAINT FK_LegacyPolicy_Contract FOREIGN KEY (
+ALTER TABLE LegacyPolicy_Account
+  ADD CONSTRAINT FK_LegacyPolicy_Contract FOREIGN KEY (
     ContractNumber, LineOfBusiness, SeriesName, PlanName
-  )
-    REFERENCES Contract (
-      ContractNumber, LineOfBusiness, SeriesName, PlanName
-    )
-);
+  ) REFERENCES Contract (
+    ContractNumber, LineOfBusiness, SeriesName, PlanName
+  );
 
 -- =================================================================
 -- SQL DDL for License_WritingNumber and AssocMaterial Junction Tables
@@ -2583,64 +2566,55 @@ CREATE TABLE LegacyPolicy_Account (
 -- Note: Junction table to link a License to a WritingNumber.
 -- -----------------------------------------------------
 CREATE TABLE License_WritingNumber (
-  -- Foreign Key columns from the License table
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
   LicenseState VARCHAR(50) NOT NULL,
   LicenseNumber VARCHAR(100) NOT NULL,
   AgencyID VARCHAR(50) NOT NULL,
   LineOfBusiness VARCHAR(100) NOT NULL,
-
-  -- Foreign Key columns from the WritingNumber table
   CompanyCode VARCHAR(10) NOT NULL,
   WritingNumber VARCHAR(50) NOT NULL,
-
-  -- Define the composite Primary Key for this junction table
-  CONSTRAINT PK_License_WritingNumber PRIMARY KEY (
-    LicenseState, LicenseNumber, AgencyID, LineOfBusiness, 
+  CONSTRAINT uq_license_writingnumber_key UNIQUE (
+    LicenseState, LicenseNumber, AgencyID, LineOfBusiness,
     CompanyCode, WritingNumber
-  ),
+  )
+) ENGINE=InnoDB;
 
-  -- Define the Foreign Key constraint pointing to the License table
-  CONSTRAINT FK_LicWritNum_License FOREIGN KEY (LicenseState, LicenseNumber, AgencyID, LineOfBusiness)
-    REFERENCES License (LicenseState, LicenseNumber, AgencyID, LineOfBusiness),
+ALTER TABLE License_WritingNumber
+  ADD CONSTRAINT FK_LicWritNum_License FOREIGN KEY (LicenseState, LicenseNumber, AgencyID, LineOfBusiness)
+  REFERENCES License (LicenseState, LicenseNumber, AgencyID, LineOfBusiness);
 
-  -- Define the Foreign Key constraint pointing to the WritingNumber table
-  CONSTRAINT FK_LicWritNum_WritingNumber FOREIGN KEY (CompanyCode, WritingNumber)
-    REFERENCES WritingNumber (CompanyCode, WritingNumber)
-);
+ALTER TABLE License_WritingNumber
+  ADD CONSTRAINT FK_LicWritNum_WritingNumber FOREIGN KEY (CompanyCode, WritingNumber)
+  REFERENCES WritingNumber (CompanyCode, WritingNumber);
 
 -- -----------------------------------------------------
 -- Table: AssocMaterial
 -- Note: Junction table to link Associates to the Materials they use.
 -- -----------------------------------------------------
 CREATE TABLE AssocMaterial (
-  -- Foreign Key columns from the Associate table
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
   AssocLastName VARCHAR(100) NOT NULL,
   AssocFirstName VARCHAR(100) NOT NULL,
   AssocMiddleInitial CHAR(1) NOT NULL,
   AssocSuffix VARCHAR(10) NOT NULL,
   AssocDOB DATE NOT NULL,
-
-  -- Foreign Key column from the Material table
   MaterialName VARCHAR(100) NOT NULL,
-
-  -- Define the composite Primary Key for this junction table
-  CONSTRAINT PK_AssocMaterial PRIMARY KEY (
-    AssocLastName, AssocFirstName, AssocMiddleInitial, AssocSuffix, AssocDOB, 
+  CONSTRAINT uq_assoc_material_key UNIQUE (
+    AssocLastName, AssocFirstName, AssocMiddleInitial, AssocSuffix, AssocDOB,
     MaterialName
-  ),
-
-  -- Define the Foreign Key constraint pointing to the Associate table
-  CONSTRAINT FK_AssocMaterial_Associate FOREIGN KEY (
-    AssocLastName, AssocFirstName, AssocMiddleInitial, AssocSuffix, AssocDOB
   )
-    REFERENCES Associate (
-      AssocLastName, AssocFirstName, AssocMiddleInitial, AssocSuffix, AssocDOB
-    ),
+) ENGINE=InnoDB;
 
-  -- Define the Foreign Key constraint pointing to the Material table
-  CONSTRAINT FK_AssocMaterial_Material FOREIGN KEY (MaterialName)
-    REFERENCES Material (MaterialName)
-);
+ALTER TABLE AssocMaterial
+  ADD CONSTRAINT FK_AssocMaterial_Associate FOREIGN KEY (
+    AssocLastName, AssocFirstName, AssocMiddleInitial, AssocSuffix, AssocDOB
+  ) REFERENCES Associate (
+    AssocLastName, AssocFirstName, AssocMiddleInitial, AssocSuffix, AssocDOB
+  );
+
+ALTER TABLE AssocMaterial
+  ADD CONSTRAINT FK_AssocMaterial_Material FOREIGN KEY (MaterialName)
+  REFERENCES Material (MaterialName);
 
 -- =================================================================
 -- SQL DDL for Various Junction Tables
@@ -2653,112 +2627,115 @@ CREATE TABLE AssocMaterial (
 -- The diagram is slightly ambiguous; this interpretation links the visual entities directly.
 -- -----------------------------------------------------
 CREATE TABLE Coverage_Claim (
-  -- Foreign Key columns from the ClaimantImage table
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
   DocumentID VARCHAR(50) NOT NULL,
   ContractNumber VARCHAR(100) NOT NULL,
   LineOfBusiness VARCHAR(100) NOT NULL,
   SeriesName VARCHAR(100) NOT NULL,
   PlanName VARCHAR(100) NOT NULL,
-
-  -- Foreign Key column from the Claim table (ClaimNumber is in both, so listed once)
   ClaimNumber VARCHAR(100) NOT NULL,
-
-  CONSTRAINT PK_Coverage_Claim PRIMARY KEY (
+  CONSTRAINT uq_coverage_claim_key UNIQUE (
     DocumentID, ContractNumber, LineOfBusiness, SeriesName, PlanName, ClaimNumber
-  ),
-  CONSTRAINT FK_CoverageClaim_ClaimantImage FOREIGN KEY (
-    DocumentID, ContractNumber, ClaimNumber, LineOfBusiness, SeriesName, PlanName
   )
-    REFERENCES ClaimantImage (
-      DocumentID, ContractNumber, ClaimNumber, LineOfBusiness, SeriesName, PlanName
-    ),
-  CONSTRAINT FK_CoverageClaim_Claim FOREIGN KEY (ClaimNumber)
-    REFERENCES Claim (ClaimNumber)
-);
+) ENGINE=InnoDB;
+
+ALTER TABLE Coverage_Claim
+  ADD CONSTRAINT FK_CoverageClaim_ClaimantImage FOREIGN KEY (
+    DocumentID, ContractNumber, ClaimNumber, LineOfBusiness, SeriesName, PlanName
+  ) REFERENCES ClaimantImage (
+    DocumentID, ContractNumber, ClaimNumber, LineOfBusiness, SeriesName, PlanName
+  );
+
+ALTER TABLE Coverage_Claim
+  ADD CONSTRAINT FK_CoverageClaim_Claim FOREIGN KEY (ClaimNumber)
+  REFERENCES Claim (ClaimNumber);
 
 -- -----------------------------------------------------
 -- Table: ClaimEvent
 -- Note: Junction table to associate multiple Images with a single Claim event.
 -- -----------------------------------------------------
 CREATE TABLE ClaimEvent (
-  -- Foreign Key columns from the ClaimImage table
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
   DocumentID VARCHAR(50) NOT NULL,
-  
-  -- Foreign Key column from the Claim table
   ClaimNumber VARCHAR(100) NOT NULL,
+  CONSTRAINT uq_claim_event_key UNIQUE (
+    DocumentID, ClaimNumber
+  )
+) ENGINE=InnoDB;
 
-  CONSTRAINT PK_ClaimEvent PRIMARY KEY (DocumentID, ClaimNumber),
-  CONSTRAINT FK_ClaimEvent_ClaimImage FOREIGN KEY (DocumentID, ClaimNumber)
-    REFERENCES ClaimImage (DocumentID, ClaimNumber),
-  CONSTRAINT FK_ClaimEvent_Claim FOREIGN KEY (ClaimNumber)
-    REFERENCES Claim (ClaimNumber)
-);
+ALTER TABLE ClaimEvent
+  ADD CONSTRAINT FK_ClaimEvent_ClaimImage FOREIGN KEY (DocumentID, ClaimNumber)
+  REFERENCES ClaimImage (DocumentID, ClaimNumber);
+
+ALTER TABLE ClaimEvent
+  ADD CONSTRAINT FK_ClaimEvent_Claim FOREIGN KEY (ClaimNumber)
+  REFERENCES Claim (ClaimNumber);
 
 -- -----------------------------------------------------
 -- Table: InvoiceGrouping
 -- Note: Junction table to group multiple Invoice Details under a single master Invoice.
 -- -----------------------------------------------------
 CREATE TABLE InvoiceGrouping (
-  -- Foreign Key columns from the InvoiceDetail table
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
   InvoiceLineNumber INT NOT NULL,
-
-  -- Foreign Key column from the Invoice table
   InvoiceNumber VARCHAR(100) NOT NULL,
-  
-  CONSTRAINT PK_InvoiceGrouping PRIMARY KEY (InvoiceLineNumber, InvoiceNumber),
-  CONSTRAINT FK_InvoiceGrouping_InvoiceDetail FOREIGN KEY (InvoiceNumber, InvoiceLineNumber)
-    REFERENCES InvoiceDetail (InvoiceNumber, InvoiceLineNumber),
-  CONSTRAINT FK_InvoiceGrouping_Invoice FOREIGN KEY (InvoiceNumber)
-    REFERENCES Invoice (InvoiceNumber)
-);
+  CONSTRAINT uq_invoice_grouping_key UNIQUE (InvoiceLineNumber, InvoiceNumber)
+) ENGINE=InnoDB;
+
+ALTER TABLE InvoiceGrouping
+  ADD CONSTRAINT FK_InvoiceGrouping_InvoiceDetail FOREIGN KEY (InvoiceNumber, InvoiceLineNumber)
+  REFERENCES InvoiceDetail (InvoiceNumber, InvoiceLineNumber);
+
+ALTER TABLE InvoiceGrouping
+  ADD CONSTRAINT FK_InvoiceGrouping_Invoice FOREIGN KEY (InvoiceNumber)
+  REFERENCES Invoice (InvoiceNumber);
 
 -- -----------------------------------------------------
 -- Table: BillingAccount_Remittance
 -- Note: Junction table to link a BillingAccount to a Remittance record.
 -- -----------------------------------------------------
 CREATE TABLE BillingAccount_Remittance (
-  -- Foreign Key columns from the BillingAccount table
-  BAccName VARCHAR(100) NOT NULL,
-  BillingAddress1 VARCHAR(255) NOT NULL,
-  BillingCity VARCHAR(100) NOT NULL,
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  BAccName VARCHAR(60) NOT NULL,
+  BillingAddress1 VARCHAR(100) NOT NULL,
+  BillingCity VARCHAR(50) NOT NULL,
   BillingState VARCHAR(50) NOT NULL,
   BillingZip VARCHAR(10) NOT NULL,
-
-  -- Foreign Key columns from the Remittance table
-  ContractNumber VARCHAR(100) NOT NULL,
-  LineOfBusiness VARCHAR(100) NOT NULL,
-  SeriesName VARCHAR(100) NOT NULL,
-  PlanName VARCHAR(100) NOT NULL,
+  ContractNumber VARCHAR(50) NOT NULL,
+  LineOfBusiness VARCHAR(50) NOT NULL,
+  SeriesName VARCHAR(50) NOT NULL,
+  PlanName VARCHAR(50) NOT NULL,
   CustLastName VARCHAR(100) NOT NULL,
   CustFirstName VARCHAR(100) NOT NULL,
   CustMiddleInitial CHAR(1) NOT NULL,
   CustSuffix VARCHAR(10) NOT NULL,
   CustDOB DATE NOT NULL,
   RemittanceDate DATE NOT NULL,
-
-  CONSTRAINT PK_BillingAccount_Remittance PRIMARY KEY (
+  CONSTRAINT uq_billing_account_remittance_key UNIQUE (
     BAccName, BillingAddress1, BillingCity, BillingState, BillingZip,
     ContractNumber, LineOfBusiness, SeriesName, PlanName,
     CustLastName, CustFirstName, CustMiddleInitial, CustSuffix, CustDOB,
     RemittanceDate
-  ),
-  CONSTRAINT FK_BillAcctRemit_BillingAccount FOREIGN KEY (
-    BAccName, BillingAddress1, BillingCity, BillingState, BillingZip
   )
-    REFERENCES BillingAccount (
-      BAccName, BillingAddress1, BillingCity, BillingState, BillingZip
-    ),
-  CONSTRAINT FK_BillAcctRemit_Remittance FOREIGN KEY (
+) ENGINE=InnoDB;
+
+ALTER TABLE BillingAccount_Remittance
+  ADD CONSTRAINT FK_BillAcctRemit_BillingAccount FOREIGN KEY (
+    BAccName, BillingAddress1, BillingCity, BillingState, BillingZip
+  ) REFERENCES BillingAccount (
+    BAccName, BillingAddress1, BillingCity, BillingState, BillingZip
+  );
+
+ALTER TABLE BillingAccount_Remittance
+  ADD CONSTRAINT FK_BillAcctRemit_Remittance FOREIGN KEY (
     ContractNumber, LineOfBusiness, SeriesName, PlanName,
     CustLastName, CustFirstName, CustMiddleInitial, CustSuffix, CustDOB,
     RemittanceDate
-  )
-    REFERENCES Remittance (
-      ContractNumber, LineOfBusiness, SeriesName, PlanName,
-      CustLastName, CustFirstName, CustMiddleInitial, CustSuffix, CustDOB,
-      RemittanceDate
-    )
-);
+  ) REFERENCES Remittance (
+    ContractNumber, LineOfBusiness, SeriesName, PlanName,
+    CustLastName, CustFirstName, CustMiddleInitial, CustSuffix, CustDOB,
+    RemittanceDate
+  );
 
 -- =================================================================
 -- SQL DDL for BenefitForBenefitingParty Junction Table
@@ -2770,45 +2747,37 @@ CREATE TABLE BillingAccount_Remittance (
 -- Note: Junction table to link a specific premium to the customer it benefits.
 -- -----------------------------------------------------
 CREATE TABLE BenefitForBenefitingParty (
-  -- Foreign Key columns from the ContractPremium table
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
   PremiumCode VARCHAR(50) NOT NULL,
   ContractNumber VARCHAR(100) NOT NULL,
   LineOfBusiness VARCHAR(100) NOT NULL,
   SeriesName VARCHAR(100) NOT NULL,
   PlanName VARCHAR(100) NOT NULL,
   RiderName VARCHAR(100) NOT NULL,
-
-  -- Foreign Key columns from the Customer table
   CustLastName VARCHAR(100) NOT NULL,
   CustFirstName VARCHAR(100) NOT NULL,
   CustMiddleInitial CHAR(1) NOT NULL,
   CustSuffix VARCHAR(10) NOT NULL,
   CustDOB DATE NOT NULL,
-
-  -- Define the composite Primary Key for this junction table
-  CONSTRAINT PK_BenefitForBenefitingParty PRIMARY KEY (
+  CONSTRAINT uq_benefit_for_benefiting_party_key UNIQUE (
     PremiumCode, ContractNumber, LineOfBusiness, SeriesName, PlanName, RiderName,
     CustLastName, CustFirstName, CustMiddleInitial, CustSuffix, CustDOB
-  ),
-
-  -- Define the Foreign Key constraint pointing to the ContractPremium table
-  CONSTRAINT FK_BFP_ContractPremium FOREIGN KEY (
-    PremiumCode, ContractNumber, LineOfBusiness, 
-    SeriesName, PlanName, RiderName
   )
-    REFERENCES ContractPremium (
-      PremiumCode, ContractNumber, LineOfBusiness, 
-      SeriesName, PlanName, RiderName
-    ),
+) ENGINE=InnoDB;
 
-  -- Define the Foreign Key constraint pointing to the Customer table
-  CONSTRAINT FK_BFP_Customer FOREIGN KEY (
+ALTER TABLE BenefitForBenefitingParty
+  ADD CONSTRAINT FK_BFP_ContractPremium FOREIGN KEY (
+    PremiumCode, ContractNumber, LineOfBusiness, SeriesName, PlanName, RiderName
+  ) REFERENCES ContractPremium (
+    PremiumCode, ContractNumber, LineOfBusiness, SeriesName, PlanName, RiderName
+  );
+
+ALTER TABLE BenefitForBenefitingParty
+  ADD CONSTRAINT FK_BFP_Customer FOREIGN KEY (
     CustLastName, CustFirstName, CustMiddleInitial, CustSuffix, CustDOB
-  )
-    REFERENCES Customer (
-      CustLastName, CustFirstName, CustMiddleInitial, CustSuffix, CustDOB
-    )
-);
+  ) REFERENCES Customer (
+    CustLastName, CustFirstName, CustMiddleInitial, CustSuffix, CustDOB
+  );
 
 -- =================================================================
 -- SQL DDL for ContractingPartyInRole Junction Table
@@ -2821,41 +2790,35 @@ CREATE TABLE BenefitForBenefitingParty (
 --       to a Customer for a specific Contract.
 -- -----------------------------------------------------
 CREATE TABLE ContractingPartyInRole (
-  -- Foreign Key columns from the Contract table
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
   ContractNumber VARCHAR(100) NOT NULL,
   LineOfBusiness VARCHAR(100) NOT NULL,
   SeriesName VARCHAR(100) NOT NULL,
   PlanName VARCHAR(100) NOT NULL,
-
-  -- Foreign Key columns from the Customer table
   CustLastName VARCHAR(100) NOT NULL,
   CustFirstName VARCHAR(100) NOT NULL,
   CustMiddleInitial CHAR(1) NOT NULL,
   CustSuffix VARCHAR(10) NOT NULL,
   CustDOB DATE NOT NULL,
-  
-  -- Foreign Key column from the ContractingPartyRole table
   RoleType VARCHAR(100) NOT NULL,
-
-  -- Define the composite Primary Key for this junction table
-  CONSTRAINT PK_ContractingPartyInRole PRIMARY KEY (
+  CONSTRAINT uq_contracting_party_in_role_key UNIQUE (
     ContractNumber, LineOfBusiness, SeriesName, PlanName,
     CustLastName, CustFirstName, CustMiddleInitial, CustSuffix, CustDOB,
     RoleType
-  ),
+  )
+) ENGINE=InnoDB;
 
-  -- Define the Foreign Key constraint pointing to the Contract table
-  CONSTRAINT FK_CPIR_Contract FOREIGN KEY (ContractNumber, LineOfBusiness, SeriesName, PlanName)
-    REFERENCES Contract (ContractNumber, LineOfBusiness, SeriesName, PlanName),
+ALTER TABLE ContractingPartyInRole
+  ADD CONSTRAINT FK_CPIR_Contract FOREIGN KEY (ContractNumber, LineOfBusiness, SeriesName, PlanName)
+  REFERENCES Contract (ContractNumber, LineOfBusiness, SeriesName, PlanName);
 
-  -- Define the Foreign Key constraint pointing to the Customer table
-  CONSTRAINT FK_CPIR_Customer FOREIGN KEY (CustLastName, CustFirstName, CustMiddleInitial, CustSuffix, CustDOB)
-    REFERENCES Customer (CustLastName, CustFirstName, CustMiddleInitial, CustSuffix, CustDOB),
+ALTER TABLE ContractingPartyInRole
+  ADD CONSTRAINT FK_CPIR_Customer FOREIGN KEY (CustLastName, CustFirstName, CustMiddleInitial, CustSuffix, CustDOB)
+  REFERENCES Customer (CustLastName, CustFirstName, CustMiddleInitial, CustSuffix, CustDOB);
 
-  -- Define the Foreign Key constraint pointing to the ContractingPartyRole table
-  CONSTRAINT FK_CPIR_Role FOREIGN KEY (RoleType)
-    REFERENCES ContractingPartyRole (RoleType)
-);
+ALTER TABLE ContractingPartyInRole
+  ADD CONSTRAINT FK_CPIR_Role FOREIGN KEY (RoleType)
+  REFERENCES ContractingPartyRole (RoleType);
 
 
 
@@ -2867,44 +2830,38 @@ CREATE TABLE ContractingPartyInRole (
 --       to a BAccAdmin for a specific BillingAccount.
 -- -----------------------------------------------------
 CREATE TABLE BAcct_BAcctAdmin (
-  -- Foreign Key columns from the BillingAccount table
-  BAccName        VARCHAR(100) NOT NULL,
-  BillingAddress1 VARCHAR(255) NOT NULL,
-  BillingCity     VARCHAR(100) NOT NULL,
-  BillingState    VARCHAR(50)  NOT NULL,
-  BillingZip      VARCHAR(10)  NOT NULL,
-
-  -- Foreign Key columns from the BAccAdmin table
-  AdminLastName       VARCHAR(100) NOT NULL,
-  AdminFirstName      VARCHAR(100) NOT NULL,
-  AdminMiddleInitial  CHAR(1)      NOT NULL,
-  AdminSuffix         VARCHAR(10)  NOT NULL,
-
-  -- Foreign Key column from the AdminRole table
-  AdminRole       VARCHAR(50)  NOT NULL,
-
-  -- Optional relationship attributes
-  StartDate       DATE         NULL,
-  EndDate         DATE         NULL,
-  Description     TEXT         NULL,
-
-  -- Composite Primary Key (includes role, like CPIR)
-  CONSTRAINT PK_BAcct_BAcctAdmin PRIMARY KEY (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  BAccName VARCHAR(60) NOT NULL,
+  BillingAddress1 VARCHAR(100) NOT NULL,
+  BillingCity VARCHAR(50) NOT NULL,
+  BillingState VARCHAR(50) NOT NULL,
+  BillingZip VARCHAR(10) NOT NULL,
+  AdminLastName VARCHAR(100) NOT NULL,
+  AdminFirstName VARCHAR(100) NOT NULL,
+  AdminMiddleInitial CHAR(1) NOT NULL,
+  AdminSuffix VARCHAR(10) NOT NULL,
+  AdminRole VARCHAR(50) NOT NULL,
+  StartDate DATE NULL,
+  EndDate DATE NULL,
+  Description TEXT NULL,
+  CONSTRAINT uq_bacct_baccta_admin_key UNIQUE (
     BAccName, BillingAddress1, BillingCity, BillingState, BillingZip,
     AdminLastName, AdminFirstName, AdminMiddleInitial, AdminSuffix,
     AdminRole
-  ),
+  )
+) ENGINE=InnoDB;
 
-  -- Foreign Keys
-  CONSTRAINT FK_BAAdmin_BillingAccount FOREIGN KEY (BAccName, BillingAddress1, BillingCity, BillingState, BillingZip)
-    REFERENCES BillingAccount (BAccName, BillingAddress1, BillingCity, BillingState, BillingZip),
+ALTER TABLE BAcct_BAcctAdmin
+  ADD CONSTRAINT FK_BAAdmin_BillingAccount FOREIGN KEY (BAccName, BillingAddress1, BillingCity, BillingState, BillingZip)
+  REFERENCES BillingAccount (BAccName, BillingAddress1, BillingCity, BillingState, BillingZip);
 
-  CONSTRAINT FK_BAAdmin_BAccAdmin FOREIGN KEY (AdminLastName, AdminFirstName, AdminMiddleInitial, AdminSuffix)
-    REFERENCES BAccAdmin (AdminLastName, AdminFirstName, AdminMiddleInitial, AdminSuffix),
+ALTER TABLE BAcct_BAcctAdmin
+  ADD CONSTRAINT FK_BAAdmin_BAccAdmin FOREIGN KEY (AdminLastName, AdminFirstName, AdminMiddleInitial, AdminSuffix)
+  REFERENCES BAccAdmin (AdminLastName, AdminFirstName, AdminMiddleInitial, AdminSuffix);
 
-  CONSTRAINT FK_BAAdmin_AdminRole FOREIGN KEY (AdminRole)
-    REFERENCES AdminRole (AdminRole)
-);
+ALTER TABLE BAcct_BAcctAdmin
+  ADD CONSTRAINT FK_BAAdmin_AdminRole FOREIGN KEY (AdminRole)
+  REFERENCES AdminRole (AdminRole);
 
 
 -- -----------------------------------------------------
@@ -2913,40 +2870,36 @@ CREATE TABLE BAcct_BAcctAdmin (
 --       to an AcctAdmin for a specific Account.
 -- -----------------------------------------------------
 CREATE TABLE Acct_AcctAdmin (
-  -- Foreign Key columns from the Account table
-  AccountName       VARCHAR(100) NOT NULL,
-  LocationAddress1  VARCHAR(255) NOT NULL,
-  LocationCity      VARCHAR(100) NOT NULL,
-  LocationState     VARCHAR(50)  NOT NULL,
-  LocationZip       VARCHAR(10)  NOT NULL,
-  CompanyCode       VARCHAR(10)  NOT NULL,
-
-  -- Foreign Key columns from the AcctAdmin table
-  AdminLastName       VARCHAR(100) NOT NULL,
-  AdminFirstName      VARCHAR(100) NOT NULL,
-  AdminMiddleInitial  CHAR(1)      NOT NULL,
-  AdminSuffix         VARCHAR(10)  NOT NULL,
-
-  -- Foreign Key column from the AdminRole table
-  AdminRole         VARCHAR(50)  NOT NULL,
-
-  -- Composite Primary Key (includes role, like CPIR)
-  CONSTRAINT PK_Acct_AcctAdmin PRIMARY KEY (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  AccountName VARCHAR(60) NOT NULL,
+  LocationAddress1 VARCHAR(100) NOT NULL,
+  LocationCity VARCHAR(50) NOT NULL,
+  LocationState VARCHAR(50) NOT NULL,
+  LocationZip VARCHAR(10) NOT NULL,
+  CompanyCode VARCHAR(10) NOT NULL,
+  AdminLastName VARCHAR(100) NOT NULL,
+  AdminFirstName VARCHAR(100) NOT NULL,
+  AdminMiddleInitial CHAR(1) NOT NULL,
+  AdminSuffix VARCHAR(10) NOT NULL,
+  AdminRole VARCHAR(50) NOT NULL,
+  CONSTRAINT uq_acct_acct_admin_key UNIQUE (
     AccountName, LocationAddress1, LocationCity, LocationState, LocationZip, CompanyCode,
     AdminLastName, AdminFirstName, AdminMiddleInitial, AdminSuffix,
     AdminRole
-  ),
+  )
+) ENGINE=InnoDB;
 
-  -- Foreign Keys
-  CONSTRAINT FK_AAA_Account FOREIGN KEY (AccountName, LocationAddress1, LocationCity, LocationState, LocationZip, CompanyCode)
-    REFERENCES Account (AccountName, LocationAddress1, LocationCity, LocationState, LocationZip, CompanyCode),
+ALTER TABLE Acct_AcctAdmin
+  ADD CONSTRAINT FK_AAA_Account FOREIGN KEY (AccountName, LocationAddress1, LocationCity, LocationState, LocationZip, CompanyCode)
+  REFERENCES Account (AccountName, LocationAddress1, LocationCity, LocationState, LocationZip, CompanyCode);
 
-  CONSTRAINT FK_AAA_AcctAdmin FOREIGN KEY (AdminLastName, AdminFirstName, AdminMiddleInitial, AdminSuffix)
-    REFERENCES AcctAdmin (AdminLastName, AdminFirstName, AdminMiddleInitial, AdminSuffix),
+ALTER TABLE Acct_AcctAdmin
+  ADD CONSTRAINT FK_AAA_AcctAdmin FOREIGN KEY (AdminLastName, AdminFirstName, AdminMiddleInitial, AdminSuffix)
+  REFERENCES AcctAdmin (AdminLastName, AdminFirstName, AdminMiddleInitial, AdminSuffix);
 
-  CONSTRAINT FK_AAA_AdminRole FOREIGN KEY (AdminRole)
-    REFERENCES AdminRole (AdminRole)
-);
+ALTER TABLE Acct_AcctAdmin
+  ADD CONSTRAINT FK_AAA_AdminRole FOREIGN KEY (AdminRole)
+  REFERENCES AdminRole (AdminRole);
 
 
 CREATE TABLE AssociateBeneficiary (
