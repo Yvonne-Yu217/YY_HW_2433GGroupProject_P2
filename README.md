@@ -4,26 +4,26 @@ This README provides an overview and recommended reading order for the key SQL f
 
 ## SQL Files and Their Purpose
 
-### 1. `EDAFromP1.sql`
+### 1. `EDA.sql`
 - **Purpose:**
   - Contains the full DDL for the EDA (OLTP/business) database, including all customer, account, address, product, and geographic tables.
   - This is the foundational schema for your business data and will be referenced by all subsequent integration and analytics steps.
 - **When to Read/Use:**
   - Start here. Review this file to understand the business data model and to create the EDA database in your RDBMS.
 
-### 2. `data_lake_us_chronic_disease_raw.sql`
+### 2. `create_data_lake_us_chronic_disease.sql`
 - **Purpose:**
   - Defines the staging (data lake) table for the US Chronic Disease Indicators dataset.
   - The table structure matches the raw CSV file, preserving all 36 columns for audit and traceability.
 - **When to Read/Use:**
   - After setting up the EDA schema, use this file to create the data lake table for loading the chronic disease CSV data.
 
-### 3. `data_warehouse_normalized_schema.sql`
-- **Purpose:**
+### 3. `data_warehouse_normalized_schema_t.sql`
+ - **Purpose:**
   - Defines the star schema for the analytical data warehouse.
   - Includes dimension tables (topics, questions, locations, stratifications, data value types) and the main fact table for health observations.
   - Contains ETL SQL examples for transforming and loading data from the data lake into the warehouse.
-- **When to Read/Use:**
+ - **When to Read/Use:**
   - After loading the raw data, use this file to create the analytical schema and to understand the transformation logic.
 
 ### 4. `db_integration_strategy.sql`
@@ -43,12 +43,12 @@ This README provides an overview and recommended reading order for the key SQL f
 
 ## Recommended Reading and Execution Order
 
-1. **`EDAFromP1.sql`**  
-   _→ Review and execute to create the business (OLTP) database._
-2. **`data_lake_us_chronic_disease_raw.sql`**  
-   _→ Create the data lake table and load the raw chronic disease CSV data._
-3. **`data_warehouse_normalized_schema.sql`**  
-   _→ Create the analytical warehouse schema and perform ETL from the data lake._
+1. **`EDA.sql`**  
+  _→ Review and execute to create the business (OLTP) database._
+2. **`create_data_lake_us_chronic_disease.sql`**
+  _→ Create the data lake table and load the raw chronic disease CSV data._
+3. **`data_warehouse_normalized_schema_t.sql`**
+  _→ Create the analytical warehouse schema and perform ETL from the data lake._
 4. **`db_integration_strategy.sql`**  
    _→ Implement the integration bridge and unified views for cross-database analytics._
 5. **(Optional) `etl_chronic_disease.py`**  
